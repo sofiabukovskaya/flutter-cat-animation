@@ -8,7 +8,7 @@ class HomePage extends StatefulWidget {
   }
 }
 
-class HomePageState extends State<HomePage> with TickerProviderStateMixin{
+class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Animation<double> catAnimation;
   AnimationController catAnimationController;
 
@@ -17,21 +17,43 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin{
     super.initState();
     catAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
     );
+    catAnimation = Tween(begin: 0.0, end: 100.0).animate(
+        CurvedAnimation(parent: catAnimationController, curve: Curves.easeIn));
+
+  }
+   void onTap() {
+    catAnimationController.forward();
+    }
+  @override
+  void dispose() {
+    catAnimationController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Animation'),
+        title: const Text('Animation'),
       ),
-      body: buildAnimation(),
+      body:GestureDetector(
+        child: buildAnimation(),
+        onTap: onTap,
+      ),
     );
   }
 
   Widget buildAnimation() {
-    return Cat();
+    return AnimatedBuilder(
+        animation: catAnimation, builder: (BuildContext context, Widget child) {
+          return Container(
+            child: child,
+            margin: EdgeInsets.only(top: catAnimation.value),
+          );
+    },
+        child: Cat()
+    );
   }
 }
