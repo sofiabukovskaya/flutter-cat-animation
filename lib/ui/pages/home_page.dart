@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animation/ui/widgets/box_flaps/left_flap.dart';
+import 'package:flutter_animation/ui/widgets/box_flaps/right_flap.dart';
 import 'package:flutter_animation/ui/widgets/build_cat_animation.dart';
 import 'package:flutter_animation/ui/widgets/build_box.dart';
 import 'package:flutter_animation/ui/widgets/cat.dart';
@@ -42,6 +44,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:Colors.orange[50],
       appBar: AppBar(
         title: const Text('Animation', style: TextStyle(fontWeight:  FontWeight.bold, color: Colors.black54),),
         backgroundColor: Colors.orangeAccent[100],
@@ -54,6 +57,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             children: <Widget>[
               buildCatAnimation(catAnimation),
               buildBox(),
+              leftFlap(),
+              rightFlap()
             ],
           ),
         ),
