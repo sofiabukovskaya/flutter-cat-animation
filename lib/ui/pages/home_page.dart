@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animation/ui/widgets/build_cat_animation.dart';
+import 'package:flutter_animation/ui/widgets/build_box.dart';
 import 'package:flutter_animation/ui/widgets/cat.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,15 +19,20 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
     catAnimationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(milliseconds: 500),
     );
-    catAnimation = Tween(begin: 0.0, end: 100.0).animate(
+    catAnimation = Tween(begin: -40.0, end: -83.0).animate(
         CurvedAnimation(parent: catAnimationController, curve: Curves.easeIn));
-
   }
-   void onTap() {
-    catAnimationController.forward();
+
+  void onTap() {
+    if (catAnimationController.status == AnimationStatus.completed) {
+      catAnimationController.reverse();
+    } else if (catAnimationController.status == AnimationStatus.dismissed) {
+      catAnimationController.forward();
     }
+  }
+
   @override
   void dispose() {
     catAnimationController.dispose();
@@ -36,24 +43,22 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Animation'),
+        title: const Text('Animation', style: TextStyle(fontWeight:  FontWeight.bold, color: Colors.black54),),
+        backgroundColor: Colors.orangeAccent[100],
+        centerTitle: true,
       ),
-      body:GestureDetector(
-        child: buildAnimation(),
+      body: GestureDetector(
+        child: Center(
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: <Widget>[
+              buildCatAnimation(catAnimation),
+              buildBox(),
+            ],
+          ),
+        ),
         onTap: onTap,
       ),
-    );
-  }
-
-  Widget buildAnimation() {
-    return AnimatedBuilder(
-        animation: catAnimation, builder: (BuildContext context, Widget child) {
-          return Container(
-            child: child,
-            margin: EdgeInsets.only(top: catAnimation.value),
-          );
-    },
-        child: Cat()
     );
   }
 }
