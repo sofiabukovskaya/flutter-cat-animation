@@ -2,17 +2,23 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-Widget leftFlap() {
+Widget leftFlap(Animation boxAnimation) {
   return Positioned(
     left: 2.0,
-    child: Transform.rotate(
+    child: AnimatedBuilder(
+      animation: boxAnimation,
       child: Container(
         height: 10.0,
         width: 125.0,
         color: Colors.brown,
       ),
-      angle: pi * 0.6,
-      alignment: Alignment.topLeft,
+      builder: (context, child) {
+        return Transform.rotate(
+          child: child,
+          angle: boxAnimation.value,
+          alignment: Alignment.topLeft,
+        );
+      },
     ),
   );
 }
